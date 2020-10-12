@@ -1,5 +1,7 @@
 import { render } from '@testing-library/react';
-import React, { Component } from 'react';
+// import React, { Component } from 'react';
+import React from 'react';
+//関数componentでは{Component}いらない
 
 //2 Functional component
 //returnでJSXを返している
