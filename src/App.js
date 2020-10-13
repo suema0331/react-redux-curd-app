@@ -1,34 +1,43 @@
 import { render } from '@testing-library/react';
-// import React, { Component } from 'react';
 import React from 'react';
-//関数componentでは{Component}いらない
 
-//2 Functional component
-//returnでJSXを返している
+//User Componentに対してnameというPropsを与えることができる
+//componentは再利用できる。例えば以下で二行分出力
+  //<User name = {"Taro"} age={10}/>
+  //<User name = {"Hanako"} age={5}/>
+//Mapを使うことで一個のhashを受け取って関数でrenderさせる
+
+//array,iterator should have a unique "key" prop.
+//reactではバーチャルDOMがあってどのDOMが変更されたかを管理している。
+//変更点のみ実際のDOMに反映している。
+//それぞれのDOMにkeyを与えてあげることで必要最低限なDOM範囲を管理している
+
 const App = () =>{
+  const profiles = [
+  { name:"Taro", age:10 }, 
+  { name:"Hanako", age: 5 },
+  { name:"Noname" }
+]
+
   return (
-  <div>
-    <Cat />
-    <Cat />
-    <Cat />
-    <Cat />
-  </div>
+    <div>
+    {
+      profiles.map((profile,index) => {
+        return <User name={profile.name} age={profile.age} key={index}/>
+      })
+    }
+    </div>
   )
 }
 
-const Cat = () =>{
-  return <div>Meow!</div>
+//外からの入力を参照して画面に出力することができる
+const User = (props) =>{
+return <div>Hi!, I am {props.name},and {props.age} years old! </div>
 }
-export default App;
 
-//1 AppをClass Componentという
-// class App extends Component{
-//   render() {
-//     return(
-//       <React.Fragment>
-//         <label htmlFor="bar">bar</label>
-//         <input type="text" onChange={() => {console.log("I am clicked.")}}/>
-//       </React.Fragment>
-//   )
-// }
-//export default App;
+//ageが入力されなかったときにage1がデフォルト値として1が渡される
+User.defaultProps ={
+  age:1 
+}
+
+export default App;
