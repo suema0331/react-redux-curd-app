@@ -15,4 +15,4 @@ export default (staet = initialState ,action) => {
     default:
         return state
   }   
-}
+} 
