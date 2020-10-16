@@ -1,15 +1,15 @@
+// Providerでstoreを全コンポネントに渡す
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux'
-import { Provider } from 'react-redux' //storeを全コンポネントに渡す
+import { Provider } from 'react-redux' 
 
 import './index.css';
 import reducer from './reducers'
 
 // componentに関しても専用のdirをつくる
-import App from './component/App';
+import App from './components/App';
 import * as serviceWorker from './serviceWorker';
-import reducers from './reducers';
 
 //作成するstoreはApp内部で唯一
 const store = createStore(reducer)

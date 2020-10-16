@@ -1,43 +1,40 @@
 import React, {Component} from 'react';
+import { connect, connnect } from 'react-redux'
 
-// AppがCounter componentを呼ぶ
-// このCounter component内でclass componentを作成
-const App = () => ( <Counter></Counter> )
+import { increment, decrement } from '../actions'
 
-//component内でStateを使う
-//ComponentはComponentを継承することで作成可能
-//一行目でインポートしておくこと
+//constructorメソッド:componentの初期化時に行うcallback
+//この中で状態を初期化しcounterの値を0にしていたがreduxではreducerで行う
+// ->this.stateは不要
 
-class Counter extends Component {
- constructor(props){    //初期化処理で実行されるメソッド
-  super(props)　　　　　　//親クラスで初期化処理を行う
-  console.log(this.state) 
-  this.state={count:0}　//オブジェクトがstateに設定される
- }
-
-  handlePlusButton = () => { //handlePlusButtonメソッドの中でstateの値を+1する
-    console.log("handlePlusButton")
-    console.log(this.state.count) //stateの状態をみる
-    this.setState({count: this.state.count +1 })//状態を変更するメソッド
-    //this.state = {count: this.state.count +1 } //直接初期化したstateを変更してはいけない
-    //状態を変えたい＋DOMを更新したい
-　  //→setStateをしたら自動で状態を変えた時にrenderが実行される
-}
-
-handleMinusButton = () => {
-  this.setState({count: this.state.count -1 })
-}
-
- render (){　//render関数を呼んでreturnのなかでcounder文字列を返す
-  console.log(this.state)
-  return( //returnするjSXの親は一個でないといけないので<React.Fragment>
+//Action　createrで実行するのでhandlePlusButton、handleMinusButtonも不要
+class App extends Component {
+ render (){
+  const props = this.props
+  return( 
   <React.Fragment>　 
-     <div>count: {this.state.count }</div>
-     <button onClick={this.handlePlusButton}>+1</button>  
-     <button onClick={this.handleMinusButton}>-1</button>  
+     <div>value: { props.value }</div>
+     <button onClick={ props.increment }>+1</button>  
+     <button onClick={ props.decrement }>-1</button>  
   </React.Fragment>
   )
 }
 }
 
-export default App;
+//mapStateToProps
+//state情報からcomponentに必要なものを取り出してcomponent内のpropsとしてmappingする機能を持つ
+
+const mapStateToProps  = state => ( {value: state.count.value} )
+
+//mapDispatchToProps
+//あるactionが起こった時にreducerにtypeに応じた状態遷移を実行させる関数
+
+const mapDispatchToProps = dispatch => ({
+  increment: () => dispatch(increment()),
+  decrement: () => dispatch(decrement())
+} )
+
+//　ショートハンドでかくこともできる
+// const mapDispatchToProps = ({increment,decrement})
+
+export default connect (mapStateToProps, mapDispatchToProps)(App)
