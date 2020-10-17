@@ -1,16 +1,18 @@
-//19.Action
-//actionを返す関数=action creater
-//componentで使用するのでexportする
-//viewを担当するcomponentでimportしてイベントを掴んだときに適切な状態遷移を行う
+import axios from   'axios'
+export const READ_EVENTS = 'READ_EVENTS'
 
-//reducerでも使うのでインポートして使えるようにする
-export const INCREMENT = 'INCREMENT'
-export const DECREMENT = 'DECREMENT'
+const ROOT_URL = 'https://udemy-utils.herokuapp.com/api/v1'
+const QUERYSTRING ='?token=token123'
 
-export const increment = ()=>({
-        type:　INCREMENT
-})
+//外部APIサーバにリクエストを投げる：非同期処理の実装
+//readeventsはpureなobjectを返す必要（この中に非同期処理実装は許されない）
+//→redux createrはredux-thunkでactionのかわりに関数を返すことができる
+//src/index.jsの'redux-thunk' はミドルウェアに該当。→appliMiddlewareもimport
 
-export const decrement = ()=>({
-        type:　DECREMENT
-})
+//axiousは非同期処理、戻り値がpromiseなのでasync await
+//バッククオートにしないとURLにアクセスできないので注意！
+export const readEvents = ()=> async dispatch => {
+        const response = await axios.get(`${ROOT_URL}/events${QUERYSTRING}`)
+        console.log(response) //status: 200が返ってくること
+        dispatch({type:　READ_EVENTS,response}) //関数の中でdeispatchを実行可能
+}
