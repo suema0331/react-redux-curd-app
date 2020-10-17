@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux'
 import { readEvents } from '../actions'
 import _ from 'lodash'
+import { Link } from 'react-router-dom'
 
 class EventsIndex extends Component {
   //componentが呼ばれる時に実行される
@@ -23,38 +24,30 @@ renderEvents(){
 
  render (){
   return( 
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Title</th>
-          <th>Body</th>
-        </tr>
-      </thead>
-      <tbody>
-        {this.renderEvents()}
-      </tbody>
-    </table>
-  // <React.Fragment>
-  //　　2回出力されて、1回目は空白、2回目に取得したイベントが入っている　 
-  //    <div> { console.log(props.events) }</div> 
-  // </React.Fragment>
+    <React.Fragment>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Body</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {this.renderEvents()}
+        </tbody>
+      </table>
+
+      <Link to="/events/new">New Event</Link>
+    </React.Fragment>
   )
 }
 }
 
-//mapStateToProps
-//state情報からcomponentに必要なものを取り出してcomponent内のpropsとしてmappingする機能を持つ
-
 //enentsをキーにしてstate.events取得
 const mapStateToProps  = state => ( {events: state.events} )
 
-//mapDispatchToProps
-//あるactionが起こった時にreducerにtypeに応じた状態遷移を実行させる関数
-
 const mapDispatchToProps = ({ readEvents })
-
-//　ショートハンドでかくこともできる
-// const mapDispatchToProps = ({increment,decrement})
 
 export default connect (mapStateToProps, mapDispatchToProps)(EventsIndex)

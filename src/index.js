@@ -4,25 +4,26 @@ import ReactDOM from 'react-dom';
 import { createStore , applyMiddleware } from 'redux'
 import { Provider } from 'react-redux' 
 import thunk from 'redux-thunk' 
-//'redux-thunk' はミドルウェアに該当。→appliMiddlewareもimport
-
+import { BrowserRouter , Route , Switch } from 'react-router-dom'
+ 
 import './index.css';
 import reducer from './reducers'
-
-// componentに関しても専用のdirをつくる
 import EventsIndex from './components/events_index';
+import EventsNew from './components/events_new';
 import * as serviceWorker from './serviceWorker';
 
 //作成するstoreはApp内部で唯一
 const store = createStore(reducer,applyMiddleware(thunk))
 
-//既存のcomponentをprovider componentでラップしてstoreに先ほどのstore属性を渡してあげる
-//従来のreactではcomponentのpropsを使って親→子→孫へと一個ずつ渡す必要があった
-//->providerで簡略化できる!
-
+//topレベルの直下に<BrowserRouter>配置
 ReactDOM.render(
   <Provider store={store}>
-    <EventsIndex />
+  <BrowserRouter>
+    <Switch>
+      <Route exact path="/events/new" component={EventsNew} /> 
+      <Route exact path="/" component={EventsIndex} />
+    </Switch>
+  </BrowserRouter>
   </Provider>,
   document.getElementById('root')
 );
